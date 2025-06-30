@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Forager's Rest</title>
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras/dist/aframe-extras.min.js"></script>
+    <script src="https://unpkg.com/aframe-proxemic-component@0.0.21/dist/aframe-proxemic-component.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/jorgecardoso/aframe-course-components/dist/aframe-course.min.js"></script>
+    <script src="https://unpkg.com/aframe-proxy-event-component/dist/aframe-proxy-event-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-webcentric-component@0.1.0/dist/aframe-webcentric-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/jorgecardoso/aframe-course-components/dist/aframe-course.min.js"></script> 
+
+</head>
+<body>
+
+    <a-scene webcentric cursor="rayOrigin: mouse">
+
+<!--3D Assets-->
+    <a-asset-item id="SceneWorld" src="/project/3D models/World.glb"></a-asset-item>
+    <a-asset-item id="Door" src="/project/3D models/Door.glb"></a-asset-item>
+    <a-asset-item id="Fish" src="/project/3D models/Fish.glb"></a-asset-item>
+    <a-asset-item id="Survival-Tools" src="/project/3D models/Survival tools.glb"></a-asset-item>
+    <a-asset-item id="Cans" src="/project/3D models/Cans.glb"></a-asset-item>
+    <a-asset-item id="Liquid-Containers" src="/project/3D models/Liquid containers.glb"></a-asset-item>
+    <a-asset-item id="Knife" src="/project/3D models/Knife.glb"></a-asset-item>
+    <a-asset-item id="Fishing" src="/project/3D models/Fishing.glb"></a-asset-item>
+    <a-asset-item id="Fishing-Rack" src="/project/3D models/Fishing rack.glb"></a-asset-item>
+    <a-asset-item id="Planting" src="/project/3D models/Planting.glb"></a-asset-item>
+    <a-asset-item id="Campfire" src="/project/3D models/Campfire.glb"></a-asset-item>
+    <a-asset-item id="Wood-Cutting" src="/project/3D models/Wood cutting.glb"></a-asset-item>
+    <a-asset-item id="Mushrooms" src="/project/3D models/Mushrooms.glb"></a-asset-item>
+    <a-asset-item id="Berries" src="/project/3D models/Berries.glb"></a-asset-item>
+    <a-asset-item id="Flames" src="/project/3D models/Flames.glb"></a-asset-item>
+    <a-asset-item id="NevMesh" src="/project/3D models/NevMesh.glb"></a-asset-item>
+
+<!--Sky Image Asset-->
+    <a-assets>
+        <img id="Plains" src="/project/Image/Plains.jpg">
+    </a-assets>
+
+<!--Image Assets-->
+    <a-assets>
+        <img id="Interactive-Map"crossorigin="anonymous" src="/project/Image/Map.jpg"/>
+        <img id="Mushroom-info" crossorigin="anonymous" src="/project/Image/Mushrooms.jpg"/>
+        <img id="Berries-info" crossorigin="anonymous" src="/project/Image/Berries.jpg"/>
+        <img id="Fishing-info" crossorigin="anonymous" src="/project/Image/Fishing.jpg">
+        <img id="Fishing-Rack-info" crossorigin="anonymous" src="/project/Image/Drying-fish.jpg">
+        <img id="Planting-info" crossorigin="anonymous" src="/project/Image/Bushcraft-farming.jpg">
+        <img id="Knife-info" crossorigin="anonymous" src="/project/Image/Survival-knife.jpg">
+        <img id="Liquid-Containers-info" crossorigin="anonymous" src="/project/Image/Liquid-containers.jpg">
+        <img id="Boiling-Water-info" crossorigin="anonymous" src="/project/Image/Boiling-water.jpg">
+        <img id="Wood-Cutting-info" crossorigin="anonymous" src="/project/Image/Wood-cutting.jpg">
+        <img id="Survival-Tools-info" crossorigin="anonymous" src="/project/Image/Survival-tools.jpg">
+    </a-assets>
+
+<!--Audio Assets-->
+    <a-assets>
+        <audio id="PlayMushroom" src="/project/Audio/Mushrooms.wav"></audio>
+        <audio id="PlayBerries" src="/project/Audio/Berries.wav"></audio>
+        <audio id="PlayFishing" src="/project/Audio/Fishing.wav"></audio>
+        <audio id="PlayFishingRack" src="/project/Audio/Drying fish.wav"></audio>
+        <audio id="PlayPlanting" src="/project/Audio/Bushcraft farming.wav"></audio>
+        <audio id="PlayKnife" src="/project/Audio/Survival knife.wav"></audio>
+        <audio id="PlayLiquidContainers" src="/project/Audio/Liquid containers.wav"></audio>
+        <audio id="PlayBoilingWater" src="/project/Audio/Boiling water.wav"></audio>
+        <audio id="PlayWoodCutting" src="/project/Audio/Wood cutting.wav"></audio>
+        <audio id="PlaySurvivalTools" src="/project/Audio/Survival kit.wav"></audio>
+        <audio id="Forest" src="/project/Audio/Forest.flac"></audio>
+        <audio id="River" src="/project/Audio/River.wav"></audio>
+        <audio id="CampFire" src="/project/Audio/Campfire.wav"></audio>
+    </a-assets>
+
+<!--Navigation Mesh Model-->
+    <a-gltf-model src="#NevMesh" opacity="0" nav-mesh></a-gltf-model>  
+
+<!--VR controller controls (with spawn location and rotation)-->
+    <a-entity id="player" movement-controls="constrainToNavMesh: true;"
+            controls="touch, gamepad,keyboard,trackpad,checkpoint" checkpoint-controls="mode: teleport" position="52.954 -0.4 -14.310" rotation="0 140 0">
+            <a-camera look-controls wasd-controls="acceleration: 8"></a-camera>
+            <a-entity id="leftHand" meta-touch-controls="hand: left">
+                <a-entity>
+                    <a-entity>
+                        <a-image src="#Interactive-Map" scale="0.4 0.4 0.4" rotation="-40 0 0" position="0 -0.2 -0.120"></a-image>
+
+                        <a-sphere opacity="0.4" position="-0.080 -0.219 -0.087" radius="0.02" color="orange" scale="2 2 2"
+                            event-set__mouseenter="opacity:1"
+                            event-set__mouseleave="opacity:0.4"
+                            proxy-event="event: click; to: #ForestJump; as: click"></a-sphere>
+
+                        <a-sphere opacity="0.4" position="0.065 -0.134 -0.140" radius="0.02" color="green" scale="2 2 2"
+                            event-set__mouseenter="opacity:1"
+                            event-set__mouseleave="opacity:0.4"
+                            proxy-event="event: click; to: #CampsiteJump; as: click"></a-sphere>
+                        
+                        <a-sphere opacity="0.4" position="0.068 -0.235 -0.068" radius="0.02" color="blue" scale="2 2 2"
+                            event-set__mouseenter="opacity:1"
+                            event-set__mouseleave="opacity:0.4"
+                            proxy-event="event: click; to: #RiverJump; as: click"></a-sphere>
+                            
+                    </a-entity>
+                </a-entity>
+            </a-entity>
+            <a-entity id="rightHand" laser-controls="hand: right">
+            </a-entity>
+        </a-entity>
+
+        
+        <!-- Checkpoints: target locations for users to jump to using the minimap -->
+        <a-cylinder id="CampsiteJump" checkpoint radius="1" height="0.1" position="5.500 0 -4.420" color="#39BB82" opacity="0"></a-cylinder>
+        <a-cylinder id="RiverJump" checkpoint radius="1" height="0.1" position="17.543 0 -16.941" color="#39BB82" opacity="0"></a-cylinder>
+        <a-cylinder id="ForestJump" checkpoint radius="1" height="0.1" position="34.197 0 -5.215" color="#39BB82" opacity="0"></a-cylinder>
+
+        
+<!--3D Models-->
+        <a-gltf-model position="0 0 0" src="#SceneWorld"></a-gltf-model>
+        <a-gltf-model position="0 0 0" src="#Cans"></a-gltf-model> 
+        <a-gltf-model position="0 0 0" src="#Flames"></a-gltf-model>       
+        <a-gltf-model position="19.164 -0.748 -27.557" src="#Fish" animation-mixer></a-gltf-model>
+
+        
+<!--Toggle Effect + SFX-->
+<!--Mushrooms-->        
+    <a-sound id="soundplayer" toggle-controls="events: click; onEvents: toggleon; offEvents: toggleoff;"
+        event-set__musicon="_event:toggleon; playvideo: #PlayMushroom" videotarget="#soundplayer" videoset="#PlayMushroom"
+        event-set__musicoff="_event: toggleoff; stopallvideos: true"
+        event-set__panelon="_event: toggleon; _target: #infopanel1; visible: true"
+        event-set__paneloff="_event: toggleoff; _target: #infopanel1; visible: false">
+        <a-gltf-model position="0 0 0" src="#Mushrooms"></a-gltf-model>
+    </a-sound>        
+
+<!--Information Panel 1-->
+    <a-entity id="infopanel1" class="infopanel" position="35.517 1.5 -4.054" look-at="a-camera" visible="false">
+        <a-image src="#Mushroom-info" height="2" width="2"></a-image>
+    </a-entity>
+
+<!--Berries-->  
+<a-sound id="soundplayer" toggle-controls="events: click; onEvents: toggleon; offEvents: toggleoff;"
+        event-set__musicon="_event:toggleon; playvideo: #PlayBerries" videotarget="#soundplayer" videoset="#PlayBerries"
+        event-set__musicoff="_event: toggleoff; stopallvideos: true"
+        event-set__panelon="_event: toggleon; _target: #infopanel2; visible: true"
+        event-set__paneloff="_event: toggleoff; _target: #infopanel2; visible: false">
+        <a-gltf-model position="0 0 0" src="#Berries">
+        </a-gltf-model>
+    </a-sound>  
+
+<!--Information Panel 2-->
+    <a-entity id="infopanel2" class="infopanel" position="32.638 2.194 -4.054" look-at="a-camera" visible="false">
+        <a-image src="#Berries-info" height="2" width="2"></a-image>
+    </a-entity>
+
+<!--Fishing-->
+    <a-sound id="soundplayer" toggle-controls="events: click; onEvents: toggleon; offEvents: toggleoff;"
+        event-set__musicon="_event:toggleon; playvideo: #PlayFishing" videotarget="#soundplayer" videoset="#PlayFishing"
+        event-set__musicoff="_event: toggleoff; stopallvideos: true"
+        event-set__panelon="_event: toggleon; _target: #infopanel3; visible: true"
+        event-set__paneloff="_event: toggleoff; _target: #infopanel3; visible: false">
+        <a-gltf-model position="0 0 0" src="#Fishing"></a-gltf-model>
+    </a-sound>  
+
+<!--Information Panel 3-->
+    <a-entity id="infopanel3" class="infopanel" position="19.143 1.780 -22.134" look-at="a-camera" visible="false">
+        <a-image src="#Fishing-info" height="2" width="2"></a-image>
+    </a-entity>
+
+<!--Fishing Rack-->
+    <a-sound id="soundplayer" toggle-controls="events: click; onEvents: toggleon; offEvents: toggleoff;"
+        event-set__musicon="_event:toggleon; playvideo: #PlayFishingRack" videotarget="#soundplayer" videoset="#PlayFishingRack"
+        event-set__musicoff="_event: toggleoff; stopallvideos: true"
+        event-set__panelon="_event: toggleon; _target: #infopanel4; visible: true"
+        event-set__paneloff="_event: toggleoff; _target: #infopanel4; visible: false">
+        <a-gltf-model position="0 0 0" src="#Fishing-Rack"></a-gltf-model>
+    </a-sound>  
+
+<!--Information Panel 4-->
+    <a-entity id="infopanel4" class="infopanel" position="22.790 2.560 -18.951" look-at="a-camera" visible="false">
+        <a-image src="#Fishing-Rack-info" height="2" width="2"></a-image>
+    </a-entity>
+
+<!--Planting-->
+    <a-sound id="soundplayer" toggle-controls="events: click; onEvents: toggleon; offEvents: toggleoff;"
+        event-set__musicon="_event:toggleon; playvideo: #PlayPlanting" videotarget="#soundplayer" videoset="#PlayPlanting"
+        event-set__musicoff="_event: toggleoff; stopallvideos: true"
+        event-set__panelon="_event: toggleon; _target: #infopanel5; visible: true"
+        event-set__paneloff="_event: toggleoff; _target: #infopanel5; visible: false">
+         <a-gltf-model position="0 0 0" src="#Planting"></a-gltf-model>
+    </a-sound>  
+
+<!--Information Panel 5-->
+    <a-entity id="infopanel5" class="infopanel" position="-0.023 1.933 -7.780" look-at="a-camera" visible="false">
+        <a-image src="#Planting-info" height="2" width="2"></a-image>
+    </a-entity>
+
+<!--Knife-->
+    <a-sound id="soundplayer" toggle-controls="events: click; onEvents: toggleon; offEvents: toggleoff;"
+        event-set__musicon="_event:toggleon; playvideo: #PlayKnife" videotarget="#soundplayer" videoset="#PlayKnife"
+        event-set__musicoff="_event: toggleoff; stopallvideos: true"
+        event-set__panelon="_event: toggleon; _target: #infopanel6; visible: true"
+        event-set__paneloff="_event: toggleoff; _target: #infopanel6; visible: false">
+        <a-gltf-model position="0 0 0" src="#Knife"></a-gltf-model>
+    </a-sound>  
+
+<!--Information Panel 6-->
+    <a-entity id="infopanel6" class="infopanel" position="-0.688 1.971 -1.627" look-at="a-camera" visible="false">
+        <a-image src="#Knife-info" height="2" width="2"></a-image>
+    </a-entity>
+
+<!--Liquid Containers-->
+    <a-sound id="soundplayer" toggle-controls="events: click; onEvents: toggleon; offEvents: toggleoff;"
+        event-set__musicon="_event:toggleon; playvideo: #PlayLiquidContainers" videotarget="#soundplayer" videoset="#PlayLiquidContainers"
+        event-set__musicoff="_event: toggleoff; stopallvideos: true"
+        event-set__panelon="_event: toggleon; _target: #infopanel7; visible: true"
+        event-set__paneloff="_event: toggleoff; _target: #infopanel7; visible: false">
+        <a-gltf-model position="0 0 0" src="#Liquid-Containers"></a-gltf-model>
+    </a-sound>  
+
+<!--Information Panel 7-->
+    <a-entity id="infopanel7" class="infopanel" position="-1.275 2.166 -2.142" look-at="a-camera" visible="false">
+        <a-image src="#Liquid-Containers-info" height="2" width="2"></a-image>
+    </a-entity>
+
+<!--Boiling Water-->
+    <a-sound id="soundplayer" toggle-controls="events: click; onEvents: toggleon; offEvents: toggleoff;"
+        event-set__musicon="_event:toggleon; playvideo: #PlayBoilingWater" videotarget="#soundplayer" videoset="#PlayBoilingWater"
+        event-set__musicoff="_event: toggleoff; stopallvideos: true"
+        event-set__panelon="_event: toggleon; _target: #infopanel8; visible: true"
+        event-set__paneloff="_event: toggleoff; _target: #infopanel8; visible: false">
+        <a-gltf-model position="0 0 0" src="#Campfire"></a-gltf-model>
+    </a-sound>  
+
+<!--Information Panel 8-->
+    <a-entity id="infopanel8" class="infopanel" position="2.756 2.429 3.281" look-at="a-camera" visible="false">
+        <a-image src="#Boiling-Water-info" height="2" width="2"></a-image>
+    </a-entity>
+
+<!--Wood Chopping-->
+    <a-sound id="soundplayer" toggle-controls="events: click; onEvents: toggleon; offEvents: toggleoff;"
+        event-set__musicon="_event:toggleon; playvideo: #PlayWoodCutting" videotarget="#soundplayer" videoset="#PlayWoodCutting"
+        event-set__musicoff="_event: toggleoff; stopallvideos: true"
+        event-set__panelon="_event: toggleon; _target: #infopanel9; visible: true"
+        event-set__paneloff="_event: toggleoff; _target: #infopanel9; visible: false">
+        <a-gltf-model position="0 0 0" src="#Wood-Cutting"></a-gltf-model>
+    </a-sound>  
+
+<!--Information Panel 9-->
+    <a-entity id="infopanel9" class="infopanel" position="-4.353 1.979 -7.035" look-at="a-camera" visible="false">
+        <a-image src="#Wood-Cutting-info" height="2" width="2"></a-image>
+    </a-entity>
+
+<!--Survival Tools-->
+    <a-sound id="soundplayer" toggle-controls="events: click; onEvents: toggleon; offEvents: toggleoff;"
+        event-set__musicon="_event:toggleon; playvideo: #PlaySurvivalTools" videotarget="#soundplayer" videoset="#PlaySurvivalTools"
+        event-set__musicoff="_event: toggleoff; stopallvideos: true"
+        event-set__panelon="_event: toggleon; _target: #infopanel10; visible: true"
+        event-set__paneloff="_event: toggleoff; _target: #infopanel10; visible: false">
+        <a-gltf-model position="0 0 0" src="#Survival-Tools"></a-gltf-model>
+    </a-sound>  
+
+<!--Information Panel 10-->
+    <a-entity id="infopanel10" class="infopanel" position="-4.449 2.232 6.217" look-at="a-camera" visible="false">
+        <a-image src="#Survival-Tools-info" height="2" width="2"></a-image>
+    </a-entity>
+
+<!--Lighting-->
+    <a-entity id="DirLight" light="type: directional; color: #fad7a0; intensity: 2" position="58.328 9.543 -11.119"></a-entity>
+
+    <a-entity id="AmbiLight" light="type: ambient; color: #f3c375; intensity: 2"></a-entity>
+
+
+<!--Sound Ambience-->
+
+    <a-entity position="34.870 2.189 -5.981">
+        <a-sound autoplay="true" loop="true" volume="0.6" sound="maxDistance:40;rolloffFactor:5" src="#Forest"></a-sound>
+    </a-entity>
+
+    <a-entity position="19.270 0.476 -24.615">
+        <a-sound autoplay="true" loop="true" volume="0.6" sound="maxDistance:40;rolloffFactor:5" src="#River"></a-sound>
+    </a-entity>
+
+    <a-entity position="2.680 0.320 0.850">
+        <a-sound autoplay="true" loop="true" volume="0.6" sound="maxDistance:40;rolloffFactor:5" src="#CampFire"></a-sound>
+    </a-entity>
+
+<!--Photosphere-->    
+        <a-sky src="#Plains"></a-sky>
+
+
+<!--Proximity Sensor-->
+      <a-box position="-1.580 1 1.228" proximity-sensor="distance: 2" opacity="0"
+        new-event-set__proximityenter="_target:#Doormodel; animation-mixer.clip: DoorOpenAction; loop: once;"></a-box>
+
+<!--Door Swing Animation-->
+        <a-gltf-model id="Doormodel" src="#Door" animation-mixer="clip: 1; loop: once; clampWhenFinished: true"></a-gltf-model>
+
+    </a-scene>
+
+</body>
+</html>
